@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Product extends Model
 {
-    protected $fillable = [
-        'name',
-        'unit_price',
-    ];
+  protected $fillable = [
+    'name',
+    'unit_price',
+  ];
 }
