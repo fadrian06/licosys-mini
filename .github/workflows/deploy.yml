@@ -1,0 +1,80 @@
+name: 🚀 Build and Deploy Workflow
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+permissions:
+  contents: read
+
+jobs:
+  web-deploy:
+    name: 🎉 Deploy Application
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Cache Composer Packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: 🛠️ Set Up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Node.js Dependencies
+        run: npm ci
+
+      - name: 🏗️ Build Project
+        run: npm run build --if-present
+
+      - name: 📦 Install PHP Dependencies (Production)
+        run: composer install --no-dev --prefer-dist --no-progress
+
+      - name: Post install
+        run: composer run-script post-root-package-install && composer run-script post-create-project-cmd
+
+      - name: Migrate Database
+        run: php artisan migrate --force
+
+      - name: 📂 Sync Files to Server
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.ftp_server }}
+          username: ${{ secrets.ftp_username }}
+          password: ${{ secrets.ftp_password }}
+          port: ${{ secrets.ftp_port }}
+          server-dir: ${{ secrets.ftp_server_dir }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github*
+            **/.github/**
+            **/node_modules*
+            **/node_modules/**
+            **/tests*
+            **/tests/**
+            .editorconfig
+            .env.example
+            .gitattributes
+            .gitignore
+            artisan
+            composer.lock
+            package-lock.json
+            package.json
+            phpunit.xml
+            postcss.config.js
+            README.md
+            tailwind.config.js
+            vite.config.js
