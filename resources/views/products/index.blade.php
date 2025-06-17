@@ -11,38 +11,38 @@
         <div
           class="p-6 text-gray-900"
           x-data='{
-                        bcvTax: undefined,
-                        products: @json($products),
-                        productName: "",
-                        get filteredProducts() {
-                            if (!this.productName) {
-                                return this.products;
-                            }
+            bcvTax: undefined,
+            products: @json($products),
+            productName: "",
+            get filteredProducts() {
+              if (!this.productName) {
+                return this.products;
+              }
 
-                            return this.products.filter(product => product.name.toLowerCase().includes(this.productName.toLowerCase()));
-                        },
-                        currentBcvTax: undefined,
-                        currentDate: "",
-                        revenue: 30,
+              return this.products.filter(product => product.name.toLowerCase().includes(this.productName.toLowerCase()));
+            },
+            currentBcvTax: undefined,
+            currentDate: "",
+            revenue: 30,
 
-                        get revenueFactor() {
-                            return (this.revenue / 100) + 1;
-                        },
-                    }'
+            get revenueFactor() {
+              return (this.revenue / 100) + 1;
+            },
+          }'
           x-init="
-                        bcvTax = Number(localStorage.getItem('bcvTax')) || undefined;
-                        revenue = Number(localStorage.getItem('revenue')) || 30;
+            bcvTax = Number(localStorage.getItem('bcvTax')) || undefined;
+            revenue = Number(localStorage.getItem('revenue')) || 30;
 
-                        axios.get('https://pydolarve.org/api/v2/tipo-cambio')
-                            .then(response => {
-                                currentDate = response.data.datetime.date;
-                                currentBcvTax = Number(response.data.monitors.usd.price);
-                            })
-                    "
+            axios.get('https://pydolarve.org/api/v2/tipo-cambio')
+              .then(response => {
+                currentDate = response.data.datetime.date;
+                currentBcvTax = Number(response.data.monitors.usd.price);
+              })
+          "
           x-effect="
-                        localStorage.setItem('bcvTax', bcvTax);
-                        localStorage.setItem('revenue', revenue);
-                    ">
+            localStorage.setItem('bcvTax', bcvTax);
+            localStorage.setItem('revenue', revenue);
+          ">
           <div class="flex justify-between mb-4">
             <h1 class="text-2xl font-bold">Lista de Productos</h1>
             <a href="{{ route('products.create') }}"
@@ -53,9 +53,11 @@
 
           <div class="mb-4">
             <dl>
-              <dt class="text-sm font-medium text-gray-700">Valor actual de la
-                tasa BCV:</dt>
-              <dd class="text-sm text-gray-900"
+              <dt class="text-sm font-medium text-gray-700">
+                Valor actual de la tasa BCV:
+              </dt>
+              <dd
+                class="text-sm text-gray-900"
                 x-text="`${currentBcvTax ? currentBcvTax.toFixed(2) : 'No definido'} (${currentDate})`">
               </dd>
             </dl>
