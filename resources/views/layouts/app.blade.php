@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <base href="{{ str_replace('index.php', '', $_SERVER['SCRIPT_NAME']) }}" />
+    <link rel="icon" href="./favicon.png" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
