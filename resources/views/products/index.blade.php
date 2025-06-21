@@ -37,6 +37,7 @@
               .then(response => {
                 currentDate = response.data.datetime.date;
                 currentBcvTax = Number(response.data.monitors.usd.price);
+                bcvTax ||= currentBcvTax;
               })
           "
           x-effect="
