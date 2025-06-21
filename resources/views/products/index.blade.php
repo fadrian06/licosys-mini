@@ -47,7 +47,7 @@
           <div class="flex justify-between mb-4">
             <h1 class="text-2xl font-bold">Lista de Productos</h1>
             <a href="{{ route('products.create') }}"
-              class="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600">
+              class="btn btn-primary fw-bold px-4 py-2 rounded hover:bg-blue-600">
               Crear Producto
             </a>
           </div>
@@ -93,62 +93,46 @@
               placeholder="Buscar por nombre..." />
           </div>
 
-          <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Nombre
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  $
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  BCV + Ganancia
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Acciones
-                </th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <template x-for="product in filteredProducts" :key="product.id">
+          <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle">
+              <thead class="text-nowrap">
                 <tr>
-                  <td class="px-6 py-4 whitespace-nowrap" x-text="product.name">
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap"
-                    x-text="product.unit_price"></td>
-                  <td
-                    class="px-6 py-4 whitespace-nowrap"
-                    x-text="(product.unit_price * (bcvTax || 0) * revenueFactor).toFixed(2)">
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <a
-                      :href="`./products/${product.id}/edit`"
-                      class="text-blue-600 hover:text-blue-900">
-                      Editar
-                    </a>
-                    |
-                    <form
-                      :action="`./products/${product.id}`"
-                      method="POST"
-                      style="display: inline">
-                      @csrf
-                      @method('DELETE')
-                      <button
-                        type="submit"
-                        class="text-red-600 hover:text-red-900">
-                        Eliminar
-                      </button>
-                    </form>
-                  </td>
+                  <th>Nombre</th>
+                  <th>$</th>
+                  <th>BCV + Ganancia</th>
+                  <th>Acciones</th>
                 </tr>
-              </template>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <template x-for="product in filteredProducts" :key="product.id">
+                  <tr>
+                    <td x-text="product.name"></td>
+                    <td x-text="product.unit_price"></td>
+                    <td x-text="(product.unit_price * (bcvTax || 0) * revenueFactor).toFixed(2)"></td>
+                    <td>
+                      <form
+                        :action="`./products/${product.id}`"
+                        method="POST"
+                        class="btn-group">
+                        @csrf
+                        @method('DELETE')
+                        <a
+                          :href="`./products/${product.id}/edit`"
+                          class="btn btn-primary">
+                          Editar
+                        </a>
+                        <button
+                          type="submit"
+                          class="btn btn-danger">
+                          Eliminar
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
           @endif
         </div>
       </div>
