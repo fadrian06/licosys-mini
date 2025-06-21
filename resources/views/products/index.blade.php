@@ -126,15 +126,23 @@
                     x-text="(product.unit_price * (bcvTax || 0) * revenueFactor).toFixed(2)">
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                    <a :href="'/products/' + product.id + '/edit'"
-                      class="text-blue-600 hover:text-blue-900">Editar</a>
+                    <a
+                      :href="`./products/${product.id}/edit`"
+                      class="text-blue-600 hover:text-blue-900">
+                      Editar
+                    </a>
                     |
-                    <form :action="'/products/' + product.id" method="POST"
-                      style="display:inline;">
+                    <form
+                      :action="`./products/${product.id}`"
+                      method="POST"
+                      style="display: inline">
                       @csrf
                       @method('DELETE')
-                      <button type="submit"
-                        class="text-red-600 hover:text-red-900">Eliminar</button>
+                      <button
+                        type="submit"
+                        class="text-red-600 hover:text-red-900">
+                        Eliminar
+                      </button>
                     </form>
                   </td>
                 </tr>
