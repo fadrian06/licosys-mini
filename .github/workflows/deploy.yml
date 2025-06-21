@@ -71,6 +71,7 @@ jobs:
             .gitattributes
             .gitignore
             artisan
+            biome.json
             composer.lock
             package-lock.json
             package.json
