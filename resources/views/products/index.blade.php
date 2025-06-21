@@ -23,15 +23,9 @@
             },
             currentBcvTax: undefined,
             currentDate: "",
-            revenue: 30,
-
-            get revenueFactor() {
-              return (this.revenue / 100) + 1;
-            },
           }'
           x-init="
             bcvTax = Number(localStorage.getItem('bcvTax')) || undefined;
-            revenue = Number(localStorage.getItem('revenue')) || 30;
 
             axios.get('https://pydolarve.org/api/v2/tipo-cambio')
               .then(response => {
@@ -42,7 +36,6 @@
           "
           x-effect="
             localStorage.setItem('bcvTax', bcvTax);
-            localStorage.setItem('revenue', revenue);
           ">
           <div class="flex justify-between mb-4">
             <h1 class="text-2xl font-bold">Lista de Productos</h1>
@@ -70,14 +63,6 @@
               type="number"
               x-model="bcvTax"
               step=".01" />
-            <x-input-label for="revenue" :value="__('Ganancia (%)')" />
-            <x-text-input
-              id="revenue"
-              class="block mt-1 w-full"
-              type="number"
-              x-model="revenue"
-              min="0"
-              max="100" />
           </div>
 
           @if($products->isEmpty())
@@ -99,15 +84,22 @@
                 <tr>
                   <th>Nombre</th>
                   <th>$</th>
-                  <th>BCV + Ganancia</th>
+                  <th>% Ganacia</th>
+                  <th>BCV</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 <template x-for="product in filteredProducts" :key="product.id">
-                  <tr>
+                  <tr
+                    x-data="{
+                      get revenueFactor() {
+                        return (product.revenue / 100) + 1;
+                      },
+                    }">
                     <td x-text="product.name"></td>
                     <td x-text="product.unit_price"></td>
+                    <td x-text="product.revenue"></td>
                     <td x-text="(product.unit_price * (bcvTax || 0) * revenueFactor).toFixed(2)"></td>
                     <td>
                       <form

@@ -13,9 +13,9 @@
             method="POST"
             action="{{ route('products.update', $product) }}"
             x-data="{
-                            name: '{{ $product->name }}',
-                            unitPrice: {{ $product->unit_price }}
-                        }"
+              name: '{{ $product->name }}',
+              unitPrice: {{ $product->unit_price }}
+            }"
             x-effect="name = name.toUpperCase()">
             @csrf
             @method('PUT')
@@ -36,12 +36,35 @@
 
             <!-- Product Price per Unit. Calculated automatically by Alpine -->
             <div class="mt-4">
-              <x-input-label for="unit_price"
+              <x-input-label
+                for="unit_price"
                 :value="__('Precio por Unidad')" />
-              <x-text-input id="unit_price" class="block mt-1 w-full"
-                type="text" name="unit_price" x-model="unitPrice" readonly />
+              <x-text-input
+                id="unit_price"
+                class="block mt-1 w-full"
+                type="number"
+                step=".01"
+                name="unit_price"
+                x-model="unitPrice"
+                readonly />
               <x-input-error :messages="$errors->get('unit_price')"
                 class="mt-2" />
+            </div>
+
+            <!-- Revenue, from 0 to 100 percent -->
+            <div class="mt-4">
+              <x-input-label for="revenue" :value="__('% Ganancia')" />
+              <x-text-input
+                id="revenue"
+                class="block mt-1 w-full"
+                type="number"
+                name="revenue"
+                :value="$product->revenue"
+                required
+                step=".01"
+                min="0"
+                max="100" />
+              <x-input-error :messages="$errors->get('revenue')" class="mt-2" />
             </div>
 
             <div class="flex items-center justify-end mt-4">

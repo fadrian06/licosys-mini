@@ -13,13 +13,13 @@
             method="POST"
             action="{{ route('products.store') }}"
             x-data="{
-                            name: '',
-                            units: undefined,
-                            pricePerBox: undefined,
-                            get pricePerUnit() {
-                                return this.units && this.pricePerBox ? (this.pricePerBox / this.units).toFixed(2) : '';
-                            },
-                        }"
+              name: '',
+              units: undefined,
+              pricePerBox: undefined,
+              get pricePerUnit() {
+                return this.units && this.pricePerBox ? (this.pricePerBox / this.units).toFixed(2) : '';
+              },
+            }"
             x-effect="name = name.toUpperCase()">
             @csrf
             <!-- Product Name -->
@@ -38,13 +38,19 @@
             <!-- Product Units -->
             <div class="mt-4">
               <x-input-label for="units" :value="__('Unidades por Caja')" />
-              <x-text-input id="units" class="block mt-1 w-full" type="number"
-                name="units" x-model="units" required />
+              <x-text-input
+                id="units"
+                class="block mt-1 w-full"
+                type="number"
+                name="units"
+                x-model="units"
+                required />
               <x-input-error :messages="$errors->get('units')" class="mt-2" />
             </div>
             <!-- Product Price per Box -->
             <div class="mt-4">
-              <x-input-label for="price_per_box"
+              <x-input-label
+                for="price_per_box"
                 :value="__('Precio por Caja')" />
               <x-text-input
                 id="price_per_box"
@@ -59,12 +65,34 @@
             </div>
             <!-- Product Price per Unit. Calculated automatically by Alpine -->
             <div class="mt-4">
-              <x-input-label for="unit_price"
+              <x-input-label
+                for="unit_price"
                 :value="__('Precio por Unidad')" />
-              <x-text-input id="unit_price" class="block mt-1 w-full"
-                type="text" name="unit_price" x-model="pricePerUnit" readonly />
-              <x-input-error :messages="$errors->get('unit_price')"
+              <x-text-input
+                id="unit_price"
+                class="block mt-1 w-full"
+                type="text"
+                name="unit_price"
+                x-model="pricePerUnit"
+                readonly />
+              <x-input-error
+                :messages="$errors->get('unit_price')"
                 class="mt-2" />
+            </div>
+            <!-- Revenue, from 0 to 100 percent -->
+            <div class="mt-4">
+              <x-input-label for="revenue" :value="__('% Ganancia')" />
+              <x-text-input
+                id="revenue"
+                class="block mt-1 w-full"
+                type="number"
+                name="revenue"
+                :value="old('revenue', 30)"
+                required
+                step=".01"
+                min="0"
+                max="100" />
+              <x-input-error :messages="$errors->get('revenue')" class="mt-2" />
             </div>
             <div class="flex items-center justify-end mt-4">
               <x-primary-button class="ms-3">

@@ -35,9 +35,10 @@ class ProductController extends Controller
     $request->validate([
       'name' => 'required|string|max:255',
       'unit_price' => 'required|numeric|min:0',
+      'revenue' => 'required|numeric|min:0',
     ]);
 
-    Product::create($request->only(['name', 'unit_price']));
+    Product::create($request->only(['name', 'unit_price', 'revenue']));
 
     return redirect()
       ->route('products.index')
@@ -72,9 +73,10 @@ class ProductController extends Controller
     $request->validate([
       'name' => 'required|string|max:255',
       'unit_price' => 'required|numeric|min:0',
+      'revenue' => 'required|numeric|min:0',
     ]);
 
-    $product->update($request->only(['name', 'unit_price']));
+    $product->update($request->only(['name', 'unit_price', 'revenue']));
 
     return redirect()
       ->route('products.index')
