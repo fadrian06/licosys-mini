@@ -61,12 +61,12 @@ jobs:
             **/.git*/**
             **/.github*
             **/.github/**
+            **/database/database.sqlite
             **/node_modules*
             **/node_modules/**
             **/tests*
             **/tests/**
             .editorconfig
-            .env
             .env.example
             .gitattributes
             .gitignore
