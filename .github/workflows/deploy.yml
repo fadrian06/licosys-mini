@@ -66,6 +66,7 @@ jobs:
             **/tests*
             **/tests/**
             .editorconfig
+            .env
             .env.example
             .gitattributes
             .gitignore
