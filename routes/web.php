@@ -17,4 +17,8 @@ Route::middleware('auth')->group(function () {
 Route::resource('products', ProductController::class)
   ->middleware(['auth', 'verified']);
 
+Route::get('preferences/theme/{theme}', function (string $theme): void {
+  $_SESSION['theme'] = $theme;
+});
+
 require __DIR__ . '/auth.php';

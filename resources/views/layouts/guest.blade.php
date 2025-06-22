@@ -1,26 +1,32 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>{{ config('app.name', 'Laravel') }}</title>
-    <base href="{{ str_replace('index.php', '', $_SERVER['SCRIPT_NAME']) }}" />
-    <link rel="icon" href="./favicon.png" />
+<x-layouts.base>
+  <body
+    class="h-100 d-flex flex-column justify-content-md-center align-items-center gap-5 pt-5 pt-md-0"
+    style="
+      background-image: url('./wallhaven-eor76o.jpg');
+      background-position: center;
+      background-size: cover;
+      background-attachment: fixed;
+    ">
+    <button
+      class="btn position-absolute top-0 right-0 m-5"
+      :class="`btn-${theme}`"
+      @click="theme = theme === 'dark' ? 'light' : 'dark'">
+      Turn
+      <span x-text="theme === 'dark' ? 'on' : 'off'"></span>
+      the lights
+      <span
+        class="bi"
+        :class="`bi-${theme === 'dark' ? 'lamp' : 'lamp-fill'}`">
+      </span>
+    </button>
+    <a href="./" class="p-3 rounded-circle shadow-lg" :class="`bg-${theme}`">
+      <x-application-logo class="w-20" />
+    </a>
 
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-  </head>
-  <body>
-    <div class="min-vh-100 d-flex flex-column justify-content-center align-items-center pt-md-5 text-bg-light">
-      <a href="./">
-        <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-      </a>
-
-      <div
-        class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+    <main class="col-lg-4">
+      <div class="card card-body border-0 shadow-lg rounded-5">
         {{ $slot }}
       </div>
-    </div>
+    </main>
   </body>
-</html>
+</x-layouts.base>
