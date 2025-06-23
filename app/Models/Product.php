@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read string $name
  * @property-read float $unit_price
  * @property-read ?float $revenue
+ * @property-read ?float $capacity
  */
 class Product extends Model
 {
@@ -16,5 +17,6 @@ class Product extends Model
     'name',
     'unit_price',
     'revenue',
+    'capacity',
   ];
 }

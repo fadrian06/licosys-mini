@@ -96,11 +96,18 @@
                       get revenueFactor() {
                         return (product.revenue / 100) + 1;
                       },
+                      get productCapacity() {
+                        return product.capacity % 1 !== 0
+                          ? `${product.capacity.toFixed(2)}L`
+                          : `${product.capacity}L`;
+                      }
                     }">
-                    <td x-text="product.name"></td>
+                    <td x-text="`${product.name} ${productCapacity}`"></td>
                     <td x-text="product.unit_price"></td>
                     <td x-text="product.revenue"></td>
-                    <td x-text="(product.unit_price * (bcvTax || 0) * revenueFactor).toFixed(2)"></td>
+                    <td
+                      x-text="(product.unit_price * (bcvTax || 0) * revenueFactor).toFixed(2)">
+                    </td>
                     <td>
                       <form
                         :action="`./products/${product.id}`"

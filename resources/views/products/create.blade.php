@@ -19,6 +19,11 @@
               get pricePerUnit() {
                 return this.units && this.pricePerBox ? (this.pricePerBox / this.units).toFixed(2) : '';
               },
+              set pricePerUnit(value) {
+                if (this.units && this.pricePerBox) {
+                  this.pricePerBox = (this.units * value).toFixed(2);
+                }
+              },
             }"
             x-effect="name = name.toUpperCase()">
             @csrf
@@ -35,6 +40,24 @@
                 x-model="name" />
               <x-input-error :messages="$errors->get('name')" class="mt-2" />
             </div>
+            <!-- Capacity -->
+            <div class="mt-4">
+              <x-input-label
+                for="capacity"
+                :value="__('Capacidad del Producto')" />
+              <x-text-input
+                id="capacity"
+                class="block mt-1 w-full"
+                type="number"
+                name="capacity"
+                :value="old('capacity')"
+                required
+                min="0"
+                step=".01" />
+              <x-input-error
+                :messages="$errors->get('capacity')"
+                class="mt-2" />
+            </div>
             <!-- Product Units -->
             <div class="mt-4">
               <x-input-label for="units" :value="__('Unidades por Caja')" />
@@ -43,8 +66,7 @@
                 class="block mt-1 w-full"
                 type="number"
                 name="units"
-                x-model="units"
-                required />
+                x-model="units" />
               <x-input-error :messages="$errors->get('units')" class="mt-2" />
             </div>
             <!-- Product Price per Box -->
@@ -58,12 +80,12 @@
                 type="number"
                 name="price_per_box"
                 x-model="pricePerBox"
-                required
                 step=".01" />
-              <x-input-error :messages="$errors->get('price_per_box')"
+              <x-input-error
+                :messages="$errors->get('price_per_box')"
                 class="mt-2" />
             </div>
-            <!-- Product Price per Unit. Calculated automatically by Alpine -->
+            <!-- Product Price per Unit -->
             <div class="mt-4">
               <x-input-label
                 for="unit_price"
@@ -71,10 +93,10 @@
               <x-text-input
                 id="unit_price"
                 class="block mt-1 w-full"
-                type="text"
+                type="number"
+                step=".01"
                 name="unit_price"
-                x-model="pricePerUnit"
-                readonly />
+                x-model="pricePerUnit" />
               <x-input-error
                 :messages="$errors->get('unit_price')"
                 class="mt-2" />
@@ -87,7 +109,7 @@
                 class="block mt-1 w-full"
                 type="number"
                 name="revenue"
-                :value="old('revenue', 30)"
+                :value="old('revenue', 0)"
                 required
                 step=".01"
                 min="0"

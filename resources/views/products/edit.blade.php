@@ -12,11 +12,10 @@
           <form
             method="POST"
             action="{{ route('products.update', $product) }}"
-            x-data="{
-              name: '{{ $product->name }}',
-              unitPrice: {{ $product->unit_price }}
-            }"
-            x-effect="name = name.toUpperCase()">
+            x-data='{
+              product: @json($product),
+            }'
+            x-effect="product.name = product.name.toUpperCase()">
             @csrf
             @method('PUT')
 
@@ -30,11 +29,30 @@
                 name="name"
                 :value="$product->name"
                 required
-                x-model="name" />
+                x-model="product.name" />
               <x-input-error :messages="$errors->get('name')" class="mt-2" />
             </div>
 
-            <!-- Product Price per Unit. Calculated automatically by Alpine -->
+            <!-- Product capacity -->
+            <div class="mt-4">
+              <x-input-label
+                for="capacity"
+                :value="__('Capacidad del Producto')" />
+              <x-text-input
+                id="capacity"
+                class="block mt-1 w-full"
+                type="number"
+                name="capacity"
+                :value="$product->capacity"
+                required
+                min="0"
+                step=".01" />
+              <x-input-error
+                :messages="$errors->get('capacity')"
+                class="mt-2" />
+            </div>
+
+            <!-- Product Price per Unit -->
             <div class="mt-4">
               <x-input-label
                 for="unit_price"
@@ -45,8 +63,9 @@
                 type="number"
                 step=".01"
                 name="unit_price"
-                x-model="unitPrice" />
-              <x-input-error :messages="$errors->get('unit_price')"
+                :value="$product->unit_price" />
+              <x-input-error
+                :messages="$errors->get('unit_price')"
                 class="mt-2" />
             </div>
 
