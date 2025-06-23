@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property-read int $id
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read float $unit_price
  * @property-read ?float $revenue
  * @property-read ?float $capacity
+ * @property-read ?User $user
  */
 class Product extends Model
 {
@@ -19,4 +21,9 @@ class Product extends Model
     'revenue',
     'capacity',
   ];
+
+  public function user(): BelongsTo
+  {
+    return $this->belongsTo(User::class);
+  }
 }

@@ -1,3 +1,5 @@
+@use(Illuminate\Support\Facades\Auth)
+
 <x-app-layout>
   <x-slot name="header">
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -11,7 +13,7 @@
         <div
           class="p-6 text-gray-900"
           x-data='{
-            bcvTax: undefined,
+            bcvTax: {{ Auth::user()->bcv_tax ?? 'undefined' }},
             products: @json($products),
             productName: "",
             get filteredProducts() {
@@ -25,8 +27,6 @@
             currentDate: "",
           }'
           x-init="
-            bcvTax = Number(localStorage.getItem('bcvTax')) || undefined;
-
             axios.get('https://pydolarve.org/api/v2/tipo-cambio')
               .then(response => {
                 currentDate = response.data.datetime.date;
@@ -35,7 +35,7 @@
               })
           "
           x-effect="
-            localStorage.setItem('bcvTax', bcvTax);
+            axios.get(`./preferences/taxes/bcv/${bcvTax || 0}`);
           ">
           <div class="flex justify-between mb-4">
             <h1 class="text-2xl font-bold">Lista de Productos</h1>

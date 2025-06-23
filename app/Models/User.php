@@ -3,10 +3,17 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property-read Collection<Product> $products
+ * @property-read ?float $bcv_tax
+ */
 class User extends Authenticatable
 {
   /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -21,6 +28,7 @@ class User extends Authenticatable
     'name',
     'email',
     'password',
+    'bcv_tax',
   ];
 
   /**
@@ -44,5 +52,10 @@ class User extends Authenticatable
       'email_verified_at' => 'datetime',
       'password' => 'hashed',
     ];
+  }
+
+  public function products(): HasMany
+  {
+    return $this->hasMany(Product::class);
   }
 }

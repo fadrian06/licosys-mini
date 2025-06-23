@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -12,10 +12,13 @@ class ProductController extends Controller
   /**
    * Display a listing of the resource.
    */
-  public function index(): View
+  public function index(Request $request): View
   {
+    $user = $request->user();
+    assert($user instanceof User);
+
     return view('products.index', [
-      'products' => Product::all(),
+      'products' => $user->products,
     ]);
   }
 
@@ -39,12 +42,16 @@ class ProductController extends Controller
       'capacity' => 'required|numeric|min:0',
     ]);
 
-    Product::create($request->only([
-      'name',
-      'unit_price',
-      'revenue',
-      'capacity'
-    ]));
+    $user = $request->user();
+
+    if ($user instanceof User) {
+      $user->products()->create($request->only([
+        'name',
+        'unit_price',
+        'revenue',
+        'capacity'
+      ]));
+    }
 
     return redirect()
       ->route('products.index')
