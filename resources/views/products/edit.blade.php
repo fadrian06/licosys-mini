@@ -45,8 +45,7 @@
                 type="number"
                 step=".01"
                 name="unit_price"
-                x-model="unitPrice"
-                readonly />
+                x-model="unitPrice" />
               <x-input-error :messages="$errors->get('unit_price')"
                 class="mt-2" />
             </div>
