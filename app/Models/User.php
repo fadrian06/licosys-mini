@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read Collection<Product> $products
  * @property-read ?float $bcv_tax
  */
-class User extends Authenticatable
+final class User extends Authenticatable
 {
   /** @use HasFactory<\Database\Factories\UserFactory> */
   use HasFactory, Notifiable;
