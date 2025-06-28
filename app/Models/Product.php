@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read ?float $capacity
  * @property-read ?User $user
  */
-class Product extends Model
+final class Product extends Model
 {
   protected $fillable = [
     'name',
@@ -22,6 +22,7 @@ class Product extends Model
     'capacity',
   ];
 
+  /** @return BelongsTo<User> */
   public function user(): BelongsTo
   {
     return $this->belongsTo(User::class);
