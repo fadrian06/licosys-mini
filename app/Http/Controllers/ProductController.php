@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class ProductController extends Controller
+final class ProductController extends Controller
 {
   /**
    * Display a listing of the resource.
