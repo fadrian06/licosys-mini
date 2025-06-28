@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -17,8 +17,8 @@ Route::middleware('auth')->group(function () {
     $_SESSION['theme'] = $theme;
   });
 
-  Route::get('preferences/taxes/bcv/{tax}', function (float $tax, Request $request): void {
-    $user = $request->user();
+  Route::get('preferences/taxes/bcv/{tax}', function (float $tax): void {
+    $user = Auth::user();
 
     if ($user instanceof User) {
       $user->update(['bcv_tax' => $tax]);
