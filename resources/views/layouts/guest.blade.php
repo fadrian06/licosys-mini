@@ -8,7 +8,7 @@
       background-attachment: fixed;
     ">
     <button
-      class="btn position-absolute top-0 right-0 m-5"
+      class="btn position-absolute top-0 right-0 m-1"
       :class="`btn-${theme}`"
       @click="theme = theme === 'dark' ? 'light' : 'dark'">
       Turn
