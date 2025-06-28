@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductDestroyRequest;
+use App\Http\Requests\ProductStoreRequest;
+use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 final class ProductController extends Controller
@@ -13,14 +16,12 @@ final class ProductController extends Controller
   /**
    * Display a listing of the resource.
    */
-  public function index(Request $request): View
+  public function index(): View
   {
-    $user = $request->user();
+    $user = Auth::user();
     assert($user instanceof User);
 
-    return view('products.index', [
-      'products' => $user->products,
-    ]);
+    return view('products.index', ['products' => $user->products]);
   }
 
   /**
@@ -34,29 +35,16 @@ final class ProductController extends Controller
   /**
    * Store a newly created resource in storage.
    */
-  public function store(Request $request): RedirectResponse
+  public function store(ProductStoreRequest $request): RedirectResponse
   {
-    $request->validate([
-      'name' => 'required|string|max:255',
-      'unit_price' => 'required|numeric|min:0',
-      'revenue' => 'required|numeric|min:0',
-      'capacity' => 'required|numeric|min:0',
-    ]);
-
+    $validated = $request->validated();
     $user = $request->user();
 
     if ($user instanceof User) {
-      $user->products()->create($request->only([
-        'name',
-        'unit_price',
-        'revenue',
-        'capacity'
-      ]));
+      $user->products()->create($validated);
     }
 
-    return redirect()
-      ->route('products.index')
-      ->with('success', 'Product created successfully.');
+    return redirect()->route('products.index');
   }
 
   /**
@@ -64,9 +52,7 @@ final class ProductController extends Controller
    */
   public function show(Product $product): View
   {
-    return view('products.show', [
-      'product' => $product,
-    ]);
+    return view('products.show', ['product' => $product]);
   }
 
   /**
@@ -82,36 +68,21 @@ final class ProductController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, Product $product): RedirectResponse
+  public function update(ProductUpdateRequest $request, Product $product): RedirectResponse
   {
-    $request->validate([
-      'name' => 'required|string|max:255',
-      'unit_price' => 'required|numeric|min:0',
-      'revenue' => 'required|numeric|min:0',
-      'capacity' => 'required|numeric|min:0',
-    ]);
+    $validated = $request->validated();
+    $product->update($validated);
 
-    $product->update($request->only([
-      'name',
-      'unit_price',
-      'revenue',
-      'capacity',
-    ]));
-
-    return redirect()
-      ->route('products.index')
-      ->with('success', 'Product updated successfully.');
+    return redirect()->route('products.index');
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(Product $product): RedirectResponse
+  public function destroy(ProductDestroyRequest $request, Product $product): RedirectResponse
   {
     $product->delete();
 
-    return redirect()
-      ->route('products.index')
-      ->with('success', 'Product deleted successfully.');
+    return redirect()->route('products.index');
   }
 }
