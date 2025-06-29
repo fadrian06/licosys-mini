@@ -4,6 +4,9 @@
   lang="{{ str_replace('_', '-', app()->getLocale()) }}"
   x-data="{
     theme: {{ $_SESSION['theme'] ?? 'undefined' }} || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+    toggleTheme() {
+      this.theme = this.theme === 'dark' ? 'light' : 'dark';
+    },
   }"
   x-effect="fetch(`./preferences/theme/${theme}`)"
   data-bs-theme="{{ $_SESSION['theme'] ?? 'light' }}"

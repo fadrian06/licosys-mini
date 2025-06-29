@@ -10,7 +10,7 @@
     <button
       class="btn position-absolute top-0 right-0 m-1"
       :class="`btn-${theme}`"
-      @click="theme = theme === 'dark' ? 'light' : 'dark'">
+      @click="toggleTheme">
       Turn
       <span x-text="theme === 'dark' ? 'on' : 'off'"></span>
       the lights
